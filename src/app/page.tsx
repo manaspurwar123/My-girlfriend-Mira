@@ -249,7 +249,7 @@ export default function MiraChatPage() {
     <div className="flex flex-col h-screen max-h-screen bg-gradient-to-b from-[hsl(6,100%,94%)] to-background overflow-hidden">
       <MiraHeader currentLanguage={currentLanguage} onLanguageToggle={handleLanguageToggle} />
       
-      <div className="flex-1 overflow-y-hidden relative">
+      <div className="flex-1 relative"> {/* Removed overflow-y-hidden here */}
         <MiraChatArea messages={messages} onDeleteMessage={handleDeleteMessage} />
         {isTyping && <div className="absolute bottom-0 left-0 right-0"><MiraTypingIndicator /></div>}
       </div>
