@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
@@ -125,7 +126,7 @@ export default function MiraChatPage() {
         addMessage({
             type: 'ai',
             text: currentLanguage === 'hi-IN' ? 'ये लो, जान, तुम्हारे लिए एक प्यारी सी तस्वीर! 📸' : 'Here you go, cutie, a lovely picture for you! 📸',
-            image: `https://placehold.co/300x200.png`, // Use actual image URL or placeholder
+            image: `https://placehold.co/300x200.png`, 
             timestamp: Date.now(),
             language: currentLanguage
         });
@@ -136,8 +137,9 @@ export default function MiraChatPage() {
 
         // Mood adjustment logic
         if (userMessageCountForMoodAdjust >= MOOD_ADJUST_INTERVAL) {
-            const conversationHistory = messages.slice(-10).map(m => ({ type: m.type, text: m.text || '', language: m.language! }));
-            const moodResult = await adjustMoodBasedOnContext({ conversationHistory: conversationHistory.map(m=>({type: m.type, text: m.text})), currentMood });
+            const conversationHistory = messages.slice(-10).map(m => ({ type: m.type, text: m.text || '' }));
+            // Ensure we map language correctly if needed by adjustMoodBasedOnContext, currently it doesn't use language.
+            const moodResult = await adjustMoodBasedOnContext({ conversationHistory , currentMood });
             setCurrentMood(moodResult.newMood as Mood);
             setUserMessageCountForMoodAdjust(0); // Reset counter
             toast({ title: "Mira's Mood Updated!", description: `Mira is now feeling ${moodResult.newMood}!`, duration: 2000 });
@@ -223,6 +225,22 @@ export default function MiraChatPage() {
       toast({ description: "Chat cleared!" });
     }
   };
+  
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setInputValue(e.target.value);
+    // Basic auto-resize for textarea
+    const textarea = e.target as HTMLTextAreaElement;
+    textarea.style.height = 'auto'; // Reset height
+    const scrollHeight = textarea.scrollHeight;
+    const maxHeight = 150; // Corresponds to max-h-[150px]
+    if (scrollHeight > maxHeight) {
+      textarea.style.height = `${maxHeight}px`;
+      textarea.style.overflowY = 'auto';
+    } else {
+      textarea.style.height = `${scrollHeight}px`;
+      textarea.style.overflowY = 'hidden';
+    }
+  };
 
   const inputPlaceholder = currentLanguage === 'hi-IN' ? 'मिरा से बात करो...' : 'Chat with Mira...';
 
@@ -240,7 +258,7 @@ export default function MiraChatPage() {
         onClick={handleClearChat}
         variant="destructive"
         size="icon"
-        className="fixed bottom-[100px] right-5 z-20 rounded-full w-12 h-12 shadow-lg"
+        className="fixed bottom-[120px] right-5 z-20 rounded-full w-12 h-12 shadow-lg sm:bottom-[100px]" // Adjusted bottom position
         title="Clear All Chats"
         aria-label="Clear All Chats"
       >
@@ -249,7 +267,7 @@ export default function MiraChatPage() {
 
       <MiraInput
         inputValue={inputValue}
-        onInputChange={(e) => setInputValue(e.target.value)}
+        onInputChange={handleInputChange} // Updated this prop
         onSendMessage={handleSendMessage}
         onMicClick={handleMicClick}
         onCameraClick={handleCameraClick}
