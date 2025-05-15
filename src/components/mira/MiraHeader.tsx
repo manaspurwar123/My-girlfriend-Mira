@@ -1,3 +1,4 @@
+
 "use client";
 
 import type { Language } from '@/types';
@@ -14,7 +15,7 @@ export function MiraHeader({ currentLanguage, onLanguageToggle }: MiraHeaderProp
   return (
     <header className="sticky top-0 z-20 flex items-center p-3 shadow-md bg-primary text-primary-foreground">
       <Avatar className="w-11 h-11 mr-3 border-2 border-primary-foreground transition-transform hover:scale-110">
-        <AvatarImage src="https://placehold.co/45x45.png" alt="Mira's Profile Picture" data-ai-hint="profile woman"/>
+        <AvatarImage src="https://placehold.co/60x60.png" alt="Mira's Profile Picture" data-ai-hint="girl portrait"/>
         <AvatarFallback>मि</AvatarFallback>
       </Avatar>
       <h2 className="text-xl font-semibold">मिरा 💕</h2>
